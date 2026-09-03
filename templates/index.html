@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stock Price Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Stock Price Prediction</h1>
+
+    <div class="card">
+        <h2>Predict Stock Price</h2>
+
+        <form action="/predict" method="POST">
+            <select name="symbol" required>
+                <option value="">Select Stock</option>
+
+                {% for stock in stocks %}
+                <option value="{{ stock[2] }}">
+                    {{ stock[1] }} ({{ stock[2] }})
+                </option>
+                {% endfor %}
+
+            </select>
+
+            <button type="submit">Predict</button>
+        </form>
+
+        {% if error %}
+        <p class="error">{{ error }}</p>
+        {% endif %}
+    </div>
+
+
+    {% if result %}
+
+    <div class="card">
+        <h2>Prediction Result</h2>
+
+        <p><b>Stock:</b> {{ result.name }}</p>
+        <p><b>Symbol:</b> {{ result.symbol }}</p>
+        <p><b>Records:</b> {{ result.records }}</p>
+
+        <h2 class="price">
+            ₹ {{ result.price }}
+        </h2>
+    </div>
+
+
+    <div class="card">
+        <h2>Model Evaluation</h2>
+
+        <p>MAE: {{ metrics.mae }}</p>
+        <p>MSE: {{ metrics.mse }}</p>
+        <p>RMSE: {{ metrics.rmse }}</p>
+        <p>R²: {{ metrics.r2 }}</p>
+    </div>
+
+
+    <div class="card">
+        <h2>Closing Price Graph</h2>
+        <img src="{{ url_for('static', filename='closing.png') }}">
+    </div>
+
+
+    <div class="card">
+        <h2>Actual vs Predicted</h2>
+        <img src="{{ url_for('static', filename='predicted.png') }}">
+    </div>
+
+    {% endif %}
+
+
+    <div class="card">
+        <h2>Available Stocks</h2>
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Stock Name</th>
+                <th>Symbol</th>
+            </tr>
+
+            {% for stock in stocks %}
+            <tr>
+                <td>{{ stock[0] }}</td>
+                <td>{{ stock[1] }}</td>
+                <td>{{ stock[2] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        {% if not stocks %}
+        <p class="error">No stocks found in database.</p>
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>
