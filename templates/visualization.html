@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Visualization</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        Stock<span>Predict</span> AI
+    </div>
+
+    <div class="nav-links">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/prediction">Prediction</a>
+        <a href="/history">History</a>
+        <a href="/analytics">Analytics</a>
+        <a href="/stock-data">Stocks</a>
+        <a class="active" href="/visualization">Visualization</a>
+        <a href="/reports">Reports</a>
+        <a href="/about">About</a>
+        <a class="logout-btn" href="/logout">Logout</a>
+    </div>
+
+</nav>
+
+<div class="container">
+
+    <h1 class="page-title">Visualization</h1>
+
+    <p class="page-subtitle">
+        Visual representation of stock market predictions.
+    </p>
+
+    <div class="two-column">
+
+        <div class="card">
+
+            <h2>Closing Price</h2>
+
+            <img
+                class="chart-img"
+                src="{{ url_for('static', filename='closing.png') }}"
+                alt="Closing Price Chart"
+            >
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>Actual vs Predicted</h2>
+
+            <img
+                class="chart-img"
+                src="{{ url_for('static', filename='predicted.png') }}"
+                alt="Prediction Chart"
+            >
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

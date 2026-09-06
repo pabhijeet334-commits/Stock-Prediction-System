@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request
+from flask import Flask,render_template,request,session
 import mysql.connector,pandas as pd,numpy as np
 import matplotlib
 matplotlib.use("Agg")
@@ -8,6 +8,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error,mean_squared_error,r2_score
 
 app=Flask(__name__)
+app.secret_key = "stock_prediction_secret_key"
 
 def db():
     return mysql.connector.connect(
@@ -26,6 +27,16 @@ def home():
 
 @app.route("/predict",methods=["POST"])
 def predict():
+
+    # Check login
+    if "user_id" not in session:
+        return render_template(
+            "login.html",
+            error="Please login before making a prediction!"
+        )
+
+    user_id=session["user_id"]
+
     sym=request.form["symbol"].upper()
     con=db(); cur=con.cursor()
 
@@ -81,29 +92,45 @@ def predict():
     plt.close()
 
     last=d.iloc[-1]
-    price=model.predict([[
-        last.Open_Price,last.High_Price,
-        last.Low_Price,last.Volume]])[0]
 
+    price=model.predict([[
+        last.Open_Price,
+        last.High_Price,
+        last.Low_Price,
+        last.Volume
+    ]])[0]
+
+    # Save prediction with logged-in User_ID
     cur.execute("""INSERT INTO prediction
-    (Stock_ID,Prediction_Price,Prediction_Date)
-    VALUES(%s,%s,CURDATE())""",(s[0],float(price)))
+    (Stock_ID,Prediction_Price,Prediction_Date,User_ID)
+    VALUES(%s,%s,CURDATE(),%s)""",
+    (s[0],float(price),user_id))
+
     con.commit()
 
     metrics={
         "mae":round(mean_absolute_error(yte,pred),2),
         "mse":round(mse,2),
         "rmse":round(np.sqrt(mse),2),
-        "r2":round(r2_score(yte,pred),2)}
+        "r2":round(r2_score(yte,pred),2)
+    }
 
     result={
-        "name":s[1],"symbol":sym,
-        "records":len(d),"price":round(price,2)}
+        "name":s[1],
+        "symbol":sym,
+        "records":len(d),
+        "price":round(price,2)
+    }
 
-    cur.close(); con.close()
+    cur.close()
+    con.close()
 
-    return render_template("index.html",
-        stocks=stocks(),result=result,metrics=metrics)
+    return render_template(
+        "index.html",
+        stocks=stocks(),
+        result=result,
+        metrics=metrics
+    )
 
 if __name__=="__main__":
     app.run(debug=True)

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Stock Data - StockPredict AI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        StockPredict <span>AI</span>
+    </div>
+
+    <div class="nav-links">
+
+        <a href="/dashboard">Dashboard</a>
+        <a href="/prediction">Prediction</a>
+        <a href="/history">History</a>
+        <a href="/analytics">Analytics</a>
+        <a href="/stock-data" class="active">Stocks</a>
+        <a href="/visualization">Visualization</a>
+        <a href="/reports">Reports</a>
+        <a href="/about">About</a>
+        <a href="/logout" class="logout-btn">Logout</a>
+
+    </div>
+
+</nav>
+
+
+<div class="container">
+
+    <h1 class="page-title">
+        Available Stocks
+    </h1>
+
+    <p class="page-subtitle">
+        Stocks available for prediction in the system
+    </p>
+
+
+    <div class="card">
+
+        {% if stocks %}
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Stock Name</th>
+                        <th>Symbol</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for stock in stocks %}
+
+                    <tr>
+
+                        <td>
+                            {{ loop.index }}
+                        </td>
+
+                        <td>
+                            {{ stock[1] }}
+                        </td>
+
+                        <td class="green">
+                            {{ stock[2] }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-report">
+
+            <h3>No Stocks Available</h3>
+
+            <p>
+                No stock data is currently available.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

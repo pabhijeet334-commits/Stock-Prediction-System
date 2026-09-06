@@ -1,105 +1,332 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Stock Price Prediction</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>StockPredict AI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
 </head>
+
 
 <body>
 
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        Stock<span>Predict</span> AI
+    </div>
+
+
+    <div class="nav-links">
+
+        <a href="/dashboard">
+            Dashboard
+        </a>
+
+        <a class="active" href="/">
+            Prediction
+        </a>
+
+        <a href="/history">
+            History
+        </a>
+
+        <a href="/analytics">
+            Analytics
+        </a>
+
+        <a href="/stock-data">
+            Stocks
+        </a>
+
+        <a href="/visualization">
+            Visualization
+        </a>
+
+        <a href="/reports">
+            Reports
+        </a>
+
+        <a href="/about">
+            About
+        </a>
+
+        {% if session.get("user_id") %}
+
+        <a class="logout-btn" href="/logout">
+            Logout
+        </a>
+
+        {% endif %}
+
+    </div>
+
+</nav>
+
+
+<!-- ================= HERO ================= -->
+
 <div class="container">
 
-    <h1>Stock Price Prediction</h1>
+    <div class="hero">
 
-    <div class="card">
-        <h2>Predict Stock Price</h2>
+        <div style="width:100%; text-align:center;">
 
-        <form action="/predict" method="POST">
-            <select name="symbol" required>
-                <option value="">Select Stock</option>
-
-                {% for stock in stocks %}
-                <option value="{{ stock[2] }}">
-                    {{ stock[1] }} ({{ stock[2] }})
-                </option>
-                {% endfor %}
-
-            </select>
-
-            <button type="submit">Predict</button>
-        </form>
-
-        {% if error %}
-        <p class="error">{{ error }}</p>
-        {% endif %}
-    </div>
+            <div class="badge">
+                ⚡ ML MODEL READY
+            </div>
 
 
-    {% if result %}
-
-    <div class="card">
-        <h2>Prediction Result</h2>
-
-        <p><b>Stock:</b> {{ result.name }}</p>
-        <p><b>Symbol:</b> {{ result.symbol }}</p>
-        <p><b>Records:</b> {{ result.records }}</p>
-
-        <h2 class="price">
-            ₹ {{ result.price }}
-        </h2>
-    </div>
+            <h1>
+                Predict. Analyze.
+                <span>Invest Smarter.</span>
+            </h1>
 
 
-    <div class="card">
-        <h2>Model Evaluation</h2>
-
-        <p>MAE: {{ metrics.mae }}</p>
-        <p>MSE: {{ metrics.mse }}</p>
-        <p>RMSE: {{ metrics.rmse }}</p>
-        <p>R²: {{ metrics.r2 }}</p>
-    </div>
+            <p style="margin:auto;">
+                Machine Learning powered stock price prediction system
+            </p>
 
 
-    <div class="card">
-        <h2>Closing Price Graph</h2>
-        <img src="{{ url_for('static', filename='closing.png') }}">
-    </div>
+            <!-- ================= PREDICTION CARD ================= -->
+
+            <div class="card"
+                 style="text-align:left; margin-top:50px;">
+
+                <h2>
+                    📈 Stock Price Prediction
+                </h2>
 
 
-    <div class="card">
-        <h2>Actual vs Predicted</h2>
-        <img src="{{ url_for('static', filename='predicted.png') }}">
-    </div>
-
-    {% endif %}
+                <br>
 
 
-    <div class="card">
-        <h2>Available Stocks</h2>
+                {% if error %}
 
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Stock Name</th>
-                <th>Symbol</th>
-            </tr>
+                <div class="error">
+                    {{ error }}
+                </div>
 
-            {% for stock in stocks %}
-            <tr>
-                <td>{{ stock[0] }}</td>
-                <td>{{ stock[1] }}</td>
-                <td>{{ stock[2] }}</td>
-            </tr>
-            {% endfor %}
-        </table>
+                {% endif %}
 
-        {% if not stocks %}
-        <p class="error">No stocks found in database.</p>
-        {% endif %}
+
+                {% if result %}
+
+                <div class="success">
+
+                    Prediction generated successfully!
+
+                </div>
+
+
+                <div class="grid">
+
+                    <div class="stat-card">
+
+                        <div class="stat-title">
+                            Stock
+                        </div>
+
+                        <div class="stat-value">
+                            {{ result.name }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-title">
+                            Symbol
+                        </div>
+
+                        <div class="stat-value green">
+                            {{ result.symbol }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-title">
+                            Predicted Price
+                        </div>
+
+                        <div class="stat-value">
+                            ₹{{ result.price }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-title">
+                            Records Used
+                        </div>
+
+                        <div class="stat-value">
+                            {{ result.records }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <br><br>
+
+
+                <div class="two-column">
+
+                    <div class="stat-card">
+
+                        <div class="stat-title">
+                            MAE
+                        </div>
+
+                        <div class="stat-value">
+                            {{ metrics.mae }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-title">
+                            MSE
+                        </div>
+
+                        <div class="stat-value">
+                            {{ metrics.mse }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-title">
+                            RMSE
+                        </div>
+
+                        <div class="stat-value">
+                            {{ metrics.rmse }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-title">
+                            R² Score
+                        </div>
+
+                        <div class="stat-value green">
+                            {{ metrics.r2 }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <br><br>
+
+                <div class="two-column">
+
+                    <div class="card">
+
+                        <h3>
+                            Closing Price
+                        </h3>
+
+                        <img
+                            class="chart-img"
+                            src="{{ url_for('static', filename='closing.png') }}"
+                            alt="Closing Price Chart"
+                        >
+
+                    </div>
+
+
+                    <div class="card">
+
+                        <h3>
+                            Actual vs Predicted
+                        </h3>
+
+                        <img
+                            class="chart-img"
+                            src="{{ url_for('static', filename='predicted.png') }}"
+                            alt="Actual vs Predicted"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                {% else %}
+
+
+                <!-- ================= FORM ================= -->
+
+                <form method="POST"
+                      action="/predict">
+
+                    <label>
+                        Select Stock
+                    </label>
+
+
+                    <select name="symbol" required>
+
+                        <option value="">
+                            -- Select a Stock --
+                        </option>
+
+
+                        {% for stock in stocks %}
+
+                        <option value="{{ stock[2] }}">
+                            {{ stock[1] }} ({{ stock[2] }})
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+
+                    <button type="submit">
+                        Predict Stock Price
+                    </button>
+
+                </form>
+
+
+                {% endif %}
+
+            </div>
+
+        </div>
 
     </div>
 
 </div>
 
 </body>
+
 </html>

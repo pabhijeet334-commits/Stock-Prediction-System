@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Prediction - StockPredict AI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        StockPredict <span>AI</span>
+    </div>
+
+    <div class="nav-links">
+
+        <a href="/dashboard">Dashboard</a>
+        <a href="/prediction" class="active">Prediction</a>
+        <a href="/history">History</a>
+        <a href="/analytics">Analytics</a>
+        <a href="/stock-data">Stocks</a>
+        <a href="/visualization">Visualization</a>
+        <a href="/reports">Reports</a>
+        <a href="/about">About</a>
+        <a href="/logout" class="logout-btn">Logout</a>
+
+    </div>
+
+</nav>
+
+
+<div class="container">
+
+    <h1 class="page-title">
+        Stock Price Prediction
+    </h1>
+
+    <p class="page-subtitle">
+        Select a stock and generate its predicted price
+    </p>
+
+
+    {% if error %}
+
+    <div class="error">
+        {{ error }}
+    </div>
+
+    {% endif %}
+
+
+    {% if result %}
+
+    <div class="success">
+        Prediction generated successfully!
+    </div>
+
+    <div class="grid">
+
+        <div class="stat-card">
+
+            <div class="stat-title">
+                Stock
+            </div>
+
+            <div class="stat-value">
+                {{ result.name }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-title">
+                Symbol
+            </div>
+
+            <div class="stat-value green">
+                {{ result.symbol }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-title">
+                Predicted Price
+            </div>
+
+            <div class="stat-value green">
+                ₹ {{ "%.2f"|format(result.price) }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-title">
+                Records Used
+            </div>
+
+            <div class="stat-value">
+                {{ result.records }}
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+
+    <div class="card" style="margin-top: 25px;">
+
+        <h2>Generate Prediction</h2>
+
+        <p class="page-subtitle">
+            Choose a stock from the available list
+        </p>
+
+
+        <form action="/predict" method="POST">
+
+            <label for="symbol">
+                Select Stock
+            </label>
+
+            <select name="symbol" id="symbol" required>
+
+                <option value="">
+                    -- Select Stock --
+                </option>
+
+                {% for stock in stocks %}
+
+                <option value="{{ stock[2] }}">
+                    {{ stock[1] }} ({{ stock[2] }})
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <button type="submit">
+                Predict Stock Price
+            </button>
+
+        </form>
+
+    </div>
+
+
+    {% if metrics %}
+
+    <div class="card" style="margin-top: 25px;">
+
+        <h2>Model Performance</h2>
+
+        <div class="grid">
+
+            <div class="stat-card">
+
+                <div class="stat-title">
+                    MAE
+                </div>
+
+                <div class="stat-value">
+                    {{ metrics.mae }}
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-title">
+                    MSE
+                </div>
+
+                <div class="stat-value">
+                    {{ metrics.mse }}
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-title">
+                    RMSE
+                </div>
+
+                <div class="stat-value">
+                    {{ metrics.rmse }}
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-title">
+                    R² Score
+                </div>
+
+                <div class="stat-value green">
+                    {{ metrics.r2 }}
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

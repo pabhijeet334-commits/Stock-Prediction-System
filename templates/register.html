@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | StockPredict AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="auth-page">
+
+    <div class="auth-box">
+
+        <div class="auth-left">
+
+            <div class="auth-logo">
+                Stock<span>Predict</span> AI
+            </div>
+
+            <div class="badge">
+                ● AI POWERED MARKET INTELLIGENCE
+            </div>
+
+            <h1>
+                Start.<br>
+                Predict.<br>
+                <span>Grow Smarter.</span>
+            </h1>
+
+            <p>
+                Create your account and access intelligent stock
+                prediction and market analysis tools.
+            </p>
+
+            <div class="market-card">
+
+                <div class="market-top">
+                    <span>AI Prediction</span>
+                    <span>LIVE AI</span>
+                </div>
+
+                <div>
+                    <span class="market-price">₹2,458.40</span>
+                    <span class="market-change">+4.82%</span>
+                </div>
+
+                <div class="bars">
+                    <div class="bar" style="height:30%"></div>
+                    <div class="bar" style="height:48%"></div>
+                    <div class="bar" style="height:42%"></div>
+                    <div class="bar" style="height:68%"></div>
+                    <div class="bar" style="height:55%"></div>
+                    <div class="bar" style="height:80%"></div>
+                    <div class="bar" style="height:72%"></div>
+                    <div class="bar" style="height:94%"></div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="auth-right">
+
+            <h2>Create account</h2>
+
+            <div class="subtitle">
+                Create your account to start predicting.
+            </div>
+
+            {% if error %}
+            <div class="error">{{ error }}</div>
+            {% endif %}
+
+            <form method="POST" action="/register">
+
+                <label>Full Name</label>
+
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Enter your full name"
+                    required
+                >
+
+                <label>Email Address</label>
+
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="you@example.com"
+                    required
+                >
+
+                <label>Password</label>
+
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Create a password"
+                    required
+                >
+
+                <button type="submit">
+                    Create Account →
+                </button>
+
+            </form>
+
+            <div class="auth-footer">
+                Already have an account?
+                <a href="/login">Login</a>
+            </div>
+
+            <div class="security">
+                🔒 Secure authentication · AI Prediction Platform
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

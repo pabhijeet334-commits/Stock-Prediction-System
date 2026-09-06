@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Prediction History - StockPredict AI</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .history-header {
+            margin-bottom: 25px;
+        }
+
+        .history-header h1 {
+            margin-bottom: 8px;
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .history-table th {
+            text-align: left;
+            padding: 20px 25px;
+            color: #22c55e;
+            font-size: 16px;
+            border-bottom: 1px solid #202d3c;
+        }
+
+        .history-table td {
+            padding: 20px 25px;
+            color: #cbd5e1;
+            border-bottom: 1px solid #202d3c;
+            font-size: 16px;
+        }
+
+        .history-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .history-table tr:hover {
+            background: rgba(34, 197, 94, 0.04);
+        }
+
+        .prediction-id {
+            color: #cbd5e1;
+        }
+
+        .stock-name {
+            font-weight: 600;
+            color: #cbd5e1;
+        }
+
+        .symbol {
+            color: #22c55e;
+            font-weight: 500;
+        }
+
+        .price {
+            font-weight: 600;
+            color: #cbd5e1;
+        }
+
+        .empty-history {
+            text-align: center;
+            padding: 50px 20px;
+            color: #8190a5;
+        }
+
+        @media (max-width: 800px) {
+            .table-wrap {
+                overflow-x: auto;
+            }
+
+            .history-table {
+                min-width: 750px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+
+    <div class="logo">
+        StockPredict <span>AI</span>
+    </div>
+
+    <div class="nav-links">
+
+        <a href="/dashboard">Dashboard</a>
+
+        <a href="/prediction">Prediction</a>
+
+        <a href="/history" class="active">History</a>
+
+        <a href="/analytics">Analytics</a>
+
+        <a href="/stock-data">Stocks</a>
+
+        <a href="/visualization">Visualization</a>
+
+        <a href="/reports">Reports</a>
+
+        <a href="/about">About</a>
+
+        <a href="/logout" class="logout-btn">Logout</a>
+
+    </div>
+
+</nav>
+
+
+<!-- MAIN CONTENT -->
+<div class="container">
+
+    <div class="history-header">
+
+        <h1 class="page-title">
+            Prediction History
+        </h1>
+
+        <p class="page-subtitle">
+            Complete record of generated stock predictions
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        {% if history %}
+
+        <div class="table-wrap">
+
+            <table class="history-table">
+
+                <thead>
+
+                    <tr>
+                        <th>ID</th>
+                        <th>Stock Name</th>
+                        <th>Symbol</th>
+                        <th>Prediction Price</th>
+                        <th>Date</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for row in history %}
+
+                    <tr>
+
+                        <!--
+                            loop.index gives:
+                            1, 2, 3, 4...
+                            for the CURRENT USER
+                        -->
+                        <td class="prediction-id">
+                            {{ loop.index }}
+                        </td>
+
+                        <td class="stock-name">
+                            {{ row[1] }}
+                        </td>
+
+                        <td class="symbol">
+                            {{ row[2] }}
+                        </td>
+
+                        <td class="price">
+                            ₹ {{ "%.2f"|format(row[3]) }}
+                        </td>
+
+                        <td>
+                            {{ row[4] }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-history">
+
+            <h3>No Predictions Yet</h3>
+
+            <p>
+                Your generated stock predictions will appear here.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

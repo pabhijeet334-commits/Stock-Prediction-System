@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Reports - StockPredict AI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .report-header {
+            margin-bottom: 25px;
+        }
+
+        .report-header h1 {
+            margin-bottom: 8px;
+        }
+
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .report-table th {
+            text-align: left;
+            padding: 18px 22px;
+            color: #22c55e;
+            border-bottom: 1px solid #202d3c;
+        }
+
+        .report-table td {
+            padding: 18px 22px;
+            color: #cbd5e1;
+            border-bottom: 1px solid #202d3c;
+        }
+
+        .report-table tr:hover {
+            background: rgba(34, 197, 94, 0.04);
+        }
+
+        .report-id {
+            color: #94a3b8;
+        }
+
+        .report-stock {
+            font-weight: 600;
+        }
+
+        .report-symbol {
+            color: #22c55e;
+            font-weight: 600;
+        }
+
+        .report-price {
+            font-weight: 600;
+        }
+
+        .empty-report {
+            text-align: center;
+            padding: 50px 20px;
+            color: #8190a5;
+        }
+
+        @media (max-width: 800px) {
+            .table-wrap {
+                overflow-x: auto;
+            }
+
+            .report-table {
+                min-width: 750px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+
+    <div class="logo">
+        StockPredict <span>AI</span>
+    </div>
+
+    <div class="nav-links">
+
+        <a href="/dashboard">Dashboard</a>
+
+        <a href="/prediction">Prediction</a>
+
+        <a href="/history">History</a>
+
+        <a href="/analytics">Analytics</a>
+
+        <a href="/stock-data">Stocks</a>
+
+        <a href="/visualization">Visualization</a>
+
+        <a href="/reports" class="active">Reports</a>
+
+        <a href="/about">About</a>
+
+        <a href="/logout" class="logout-btn">Logout</a>
+
+    </div>
+
+</nav>
+
+
+<!-- MAIN -->
+<div class="container">
+
+    <div class="report-header">
+
+        <h1 class="page-title">
+            Prediction Reports
+        </h1>
+
+        <p class="page-subtitle">
+            Your complete stock prediction report
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        {% if reports %}
+
+        <div class="table-wrap">
+
+            <table class="report-table">
+
+                <thead>
+
+                    <tr>
+                        <th>ID</th>
+                        <th>Stock Name</th>
+                        <th>Symbol</th>
+                        <th>Prediction Price</th>
+                        <th>Date</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for row in reports %}
+
+                    <tr>
+
+                        <!-- User-wise serial number -->
+                        <td class="report-id">
+                            {{ loop.index }}
+                        </td>
+
+                        <td class="report-stock">
+                            {{ row[1] }}
+                        </td>
+
+                        <td class="report-symbol">
+                            {{ row[2] }}
+                        </td>
+
+                        <td class="report-price">
+                            ₹ {{ "%.2f"|format(row[3]) }}
+                        </td>
+
+                        <td>
+                            {{ row[4] }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-report">
+
+            <h3>No Reports Available</h3>
+
+            <p>
+                Your prediction reports will appear here
+                after you make a prediction.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

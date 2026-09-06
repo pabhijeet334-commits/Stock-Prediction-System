@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Analytics - StockPredict AI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        StockPredict <span>AI</span>
+    </div>
+
+    <div class="nav-links">
+
+        <a href="/dashboard">Dashboard</a>
+        <a href="/prediction">Prediction</a>
+        <a href="/history">History</a>
+        <a href="/analytics" class="active">Analytics</a>
+        <a href="/stock-data">Stocks</a>
+        <a href="/visualization">Visualization</a>
+        <a href="/reports">Reports</a>
+        <a href="/about">About</a>
+        <a href="/logout" class="logout-btn">Logout</a>
+
+    </div>
+
+</nav>
+
+
+<div class="container">
+
+    <h1 class="page-title">
+        Prediction Analytics
+    </h1>
+
+    <p class="page-subtitle">
+        Analyze your stock prediction performance
+    </p>
+
+
+    <div class="card">
+
+        {% if prices %}
+
+        <canvas id="predictionChart"></canvas>
+
+        {% else %}
+
+        <div class="empty-report">
+
+            <h3>No Analytics Data</h3>
+
+            <p>
+                Make a prediction to see your analytics here.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+{% if prices %}
+
+<script id="chart-data" type="application/json">
+{
+    "labels": {{ labels | tojson }},
+    "prices": {{ prices | tojson }}
+}
+</script>
+
+<script>
+
+const chartData = JSON.parse(
+    document.getElementById("chart-data").textContent
+);
+
+const ctx = document.getElementById("predictionChart");
+
+new Chart(ctx, {
+
+    type: "line",
+
+    data: {
+        labels: chartData.labels,
+
+        datasets: [{
+            label: "Predicted Price",
+
+            data: chartData.prices,
+
+            borderWidth: 2,
+
+            tension: 0.3,
+
+            fill: false
+        }]
+    },
+
+    options: {
+
+        responsive: true,
+
+        plugins: {
+            legend: {
+                display: true
+            }
+        },
+
+        scales: {
+
+            y: {
+                beginAtZero: false
+            }
+
+        }
+
+    }
+
+});
+
+</script>
+
+{% endif %}
+
+</body>
+</html>
