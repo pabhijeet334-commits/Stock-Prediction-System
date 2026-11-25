@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Stocks</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .navbar {
+            background: #111827;
+            padding: 18px 40px;
+            color: white;
+        }
+
+        .navbar h2 {
+            margin: 0;
+            display: inline-block;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1150px;
+            margin: 40px auto;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            overflow-x: auto;
+        }
+
+        h2 {
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #111827;
+            color: white;
+            padding: 13px;
+            text-align: left;
+        }
+
+        td {
+            padding: 13px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        .symbol {
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .records {
+            font-weight: bold;
+        }
+
+        .delete {
+            color: #dc2626;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .delete:hover {
+            text-decoration: underline;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 18px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        .back:hover {
+            background: #1d4ed8;
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                width: 95%;
+            }
+
+            .card {
+                padding: 15px;
+            }
+
+            table {
+                min-width: 700px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <h2>Stock Prediction System</h2>
+</div>
+
+<div class="container">
+
+    <h2>Manage Stocks</h2>
+
+    <p class="subtitle">
+        View available stocks and their historical data records.
+    </p>
+
+    <div class="card">
+
+        <table>
+
+            <tr>
+                <th>Stock Name</th>
+                <th>Company</th>
+                <th>Symbol</th>
+                <th>Records</th>
+                <th>Action</th>
+            </tr>
+
+            {% for s in stocks %}
+
+            <tr>
+                <td>{{s[1]}}</td>
+
+                <td>{{s[2]}}</td>
+
+                <td class="symbol">
+                    {{s[3]}}
+                </td>
+
+                <td class="records">
+                    {{s[4]}}
+                </td>
+
+                <td>
+                    <a class="delete"
+                       href="/admin/stocks/delete/{{s[0]}}"
+                       onclick="return confirm('Delete this stock?')">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+    <a class="back" href="/admin/dashboard">
+        ← Back to Dashboard
+    </a>
+
+</div>
+
+</body>
+</html>

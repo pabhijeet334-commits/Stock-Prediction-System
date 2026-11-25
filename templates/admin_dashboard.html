@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .navbar {
+            background: #111827;
+            padding: 18px 40px;
+            color: white;
+        }
+
+        .navbar h2 {
+            margin: 0;
+            display: inline-block;
+        }
+
+        .logout {
+            float: right;
+            color: white;
+            text-decoration: none;
+            background: #dc2626;
+            padding: 9px 16px;
+            border-radius: 6px;
+        }
+
+        .logout:hover {
+            background: #b91c1c;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 40px auto;
+        }
+
+        .welcome {
+            margin-bottom: 30px;
+        }
+
+        .welcome h2 {
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            color: #6b7280;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+            margin-bottom: 35px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .stat-title {
+            color: #6b7280;
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .actions {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .actions h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 11px 18px;
+            margin: 5px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        .btn:hover {
+            background: #1d4ed8;
+        }
+
+        @media (max-width: 700px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar {
+                padding: 15px 20px;
+            }
+
+            .container {
+                width: 92%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <h2>Stock Prediction System</h2>
+
+    <a class="logout" href="/admin/logout">
+        Logout
+    </a>
+</div>
+
+<div class="container">
+
+    <div class="welcome">
+        <h2>Admin Dashboard</h2>
+        <p>Monitor users, stocks and prediction activity.</p>
+    </div>
+
+    <div class="grid">
+
+        <div class="card">
+            <div class="stat-title">Total Users</div>
+            <div class="stat-value">{{users}}</div>
+        </div>
+
+        <div class="card">
+            <div class="stat-title">Total Stocks</div>
+            <div class="stat-value">{{stocks}}</div>
+        </div>
+
+        <div class="card">
+            <div class="stat-title">Total Predictions</div>
+            <div class="stat-value">{{predictions}}</div>
+        </div>
+
+    </div>
+
+    <div class="actions">
+
+        <h3>Admin Actions</h3>
+
+        <a class="btn" href="/admin/users">
+            Manage Users
+        </a>
+
+        <a class="btn" href="/admin/stocks">
+            View Stocks
+        </a>
+
+        <a class="btn" href="/admin/predictions">
+            View Predictions
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>
